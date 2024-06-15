@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "288848763262",
+    "project_id": "dental-ai-b92a0",
+    "storage_bucket": "dental-ai-b92a0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:288848763262:android:25a0c8d703af475673fb2f",
+        "android_client_info": {
+          "package_name": "com.practicecoding.dentalai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBA6cKesvRmYLKI8BpQXugChHArxY7VSfs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
