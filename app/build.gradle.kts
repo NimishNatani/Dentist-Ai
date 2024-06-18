@@ -66,6 +66,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("com.google.firebase:firebase-auth:23.0.0")
+    implementation("com.google.firebase:firebase-firestore-ktx:25.0.0")
+    implementation("com.google.firebase:firebase-storage-ktx:21.0.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -79,7 +81,7 @@ dependencies {
     val nav_version = "2.7.7"
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
-    val composeVersion = "1.6.7"
+    val composeVersion = "1.6.8"
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.material3:material3:1.2.1")
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
@@ -90,9 +92,12 @@ dependencies {
     //Json to kotlin object mapping ,this will convert json object to kotlin object
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.9.0")
+
+
 
     //    lifecycle
-    val lifecycle_version = "2.8.1"
+    val lifecycle_version = "2.8.2"
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
     // ViewModel utilities for Compose
@@ -129,17 +134,18 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.9.0")
     implementation("com.exyte:animated-navigation-bar:1.0.0")
 
-    val camerax_version = "1.3.3"
+    val camerax_version = "1.3.4"
     //// CAMERA STUFF ////
-    implementation ("androidx.camera:camera-camera2:$camerax_version")
+    implementation ("androidx.camera:camera-core:${camerax_version}")
+    implementation ("androidx.camera:camera-camera2:${camerax_version}")
+    implementation ("androidx.camera:camera-view:${camerax_version}")
     implementation ("androidx.camera:camera-lifecycle:$camerax_version")
-    implementation ("androidx.camera:camera-view:$camerax_version")
-    implementation ("androidx.camera:camera-extensions:$camerax_version")
+    implementation ("com.google.guava:guava:32.0.1-android")
 
 
     implementation ( "com.airbnb.android:lottie-compose:6.4.0" )
 
-    implementation("com.google.ai.client.generativeai:generativeai:0.7.0")
+    implementation("com.google.ai.client.generativeai:generativeai:0.8.0")
 
 
 }

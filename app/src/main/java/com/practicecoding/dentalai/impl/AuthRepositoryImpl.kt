@@ -2,23 +2,28 @@ package com.practicecoding.dentalai.impl
 
 import android.app.Activity
 import android.content.Context
-import android.content.SharedPreferences
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.firestore.CollectionReference
 import com.practicecoding.dentalai.data.AuthRepository
 import com.practicecoding.dentalai.data.Resource
+import com.practicecoding.dentalai.data.model.UserModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val authdb: FirebaseAuth,
+    private val userdb: CollectionReference,
     @ApplicationContext private val context: Context
 
 ) : AuthRepository {
@@ -63,7 +68,9 @@ class AuthRepositoryImpl @Inject constructor(
             }
         }
 
-    override fun signWithCredential(otp: String): Flow<Resource<String>> = callbackFlow {
+    override fun signWithCredential(
+        otp: String
+    ): Flow<Resource<String>> = callbackFlow {
         trySend(Resource.Loading)
         val savedVerificationCode = sharedPreferences.getString("verification_code", null)
         if (savedVerificationCode != null) {
@@ -82,6 +89,33 @@ class AuthRepositoryImpl @Inject constructor(
         }
         awaitClose {
             close()
+        }
+    }
+
+    override suspend fun setUser(name: String, phone: String) {
+        withContext(Dispatchers.IO) {
+            val userDocRef = userdb.document(authdb.currentUser?.uid.toString())
+            val getUser = userDocRef.get().await()
+
+            if (getUser.exists()) {
+                // User exists, update name and phone number
+                userDocRef.update(
+                    "name", name,
+                    "phoneNumber", phone
+                ).await()
+            } else {
+                // User does not exist, create a new user
+                val user = UserModel(
+                    name = name,
+                    phoneNumber = phone,
+                    imageUri = "",
+                    uid = authdb.currentUser?.uid,
+                    "",  // Replace with actual field names and values
+                    "",
+                    ""
+                )
+                userDocRef.set(user).await()
+            }
         }
     }
 }

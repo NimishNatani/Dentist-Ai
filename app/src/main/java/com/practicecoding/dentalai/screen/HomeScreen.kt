@@ -28,6 +28,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,6 +42,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.exyte.animatednavbar.AnimatedNavigationBar
 import com.exyte.animatednavbar.animation.balltrajectory.Teleport
@@ -50,6 +52,8 @@ import com.practicecoding.dentalai.Screens
 import com.practicecoding.dentalai.general.noRippleClickable
 import com.practicecoding.dentalai.ui.theme.darkBlue
 import com.practicecoding.dentalai.ui.theme.lightBlue
+import com.practicecoding.dentalai.viewmodel.GetUserDataViewModel
+import com.practicecoding.dentalai.viewmodel.MainEvent
 
 @Composable
 fun MainScreen(navHostController: NavHostController) {
@@ -93,7 +97,10 @@ fun HomeScreen(navHostController: NavHostController) {
 }
 
 @Composable
-fun TopSection() {
+fun TopSection(viewModel: GetUserDataViewModel= hiltViewModel()) {
+    LaunchedEffect(Unit) {
+        viewModel.onEvent(MainEvent.GetUser)
+    }
     Column(
         modifier = Modifier
             .clip(RoundedCornerShape(bottomEnd = 10.dp, bottomStart = 10.dp))
@@ -121,7 +128,7 @@ fun TopSection() {
                         fontWeight = FontWeight.Bold,
                     )
                     Text(
-                        text = "Utkarsh Zole",
+                        text = viewModel.user.value.name.toString(),
                         fontSize = 16.sp,
                         color = Color.White
                     )

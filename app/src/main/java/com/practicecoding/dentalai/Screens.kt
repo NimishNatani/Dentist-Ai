@@ -9,5 +9,7 @@ sealed class Screens(val route: String) {
    data object ScanTeethScreen:Screens(route = "scan_teeth_screen")
    data object ReportScreen:Screens(route = "report_screen")
    data object SymptomsTracker:Screens(route = "symptoms_screen")
+   data object CameraScreen:Screens(route = "camera_screen")
+   data object TeethImageScreen:Screens(route = "teethImageScreen")
 
 }

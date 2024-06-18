@@ -1,4 +1,4 @@
-package com.practicecoding.dentalai.screen.category
+package com.practicecoding.dentalai.screen.category.reportscreen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.practicecoding.dentalai.R
+import com.practicecoding.dentalai.Screens
 import com.practicecoding.dentalai.screen.SearchSection
 import com.practicecoding.dentalai.ui.theme.darkBlue
 import com.practicecoding.dentalai.ui.theme.lightBlue
@@ -60,7 +61,7 @@ fun ScanTeethScreen(navHostController: NavHostController) {
             .background(lightBlue)
     ) {
         TopSection()
-        ScanTeethSection()
+        ScanTeethSection(navHostController)
         Spacer(modifier = Modifier.height(20.dp))
         AnimatedSteps()
     }
@@ -94,7 +95,7 @@ fun TopSection() {
 }
 
 @Composable
-fun ScanTeethSection() {
+fun ScanTeethSection(navHostController: NavHostController) {
     Column(
         modifier = Modifier.padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -116,7 +117,7 @@ fun ScanTeethSection() {
                     .clip(RoundedCornerShape(20.dp))
                     .background(Color.White)
                     .border(width = 5.dp, color = darkBlue)
-                    .clickable { /* TODO: Handle scan teeth click */ }
+                    .clickable { navHostController.navigate(Screens.CameraScreen.route) }
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,

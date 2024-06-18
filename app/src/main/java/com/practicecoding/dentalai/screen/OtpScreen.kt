@@ -68,7 +68,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun OtpScreen(
-    mobileNumber: String, navHostController: NavHostController,
+    mobileNumber: String,name:String, navHostController: NavHostController,
     viewModel: AuthViewModel = hiltViewModel(),
 
     ) {
@@ -274,7 +274,7 @@ fun OtpScreen(
                 onClick = {
                     val otpString = otp.joinToString(separator = "") { it.value.text }
                     scope.launch(Dispatchers.IO) {
-                        viewModel.onEvent(AuthEvent.OtpCode(otpString,context,navHostController))
+                        viewModel.onEvent(AuthEvent.OtpCode(otpString,context,navHostController,name, mobileNumber))
 
                     }
                 },

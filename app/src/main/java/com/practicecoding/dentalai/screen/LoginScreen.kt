@@ -212,7 +212,7 @@ fun LoginScreen(
             Button(
                 onClick = {
                     scope.launch(Dispatchers.IO){
-                        viewModel.onEvent(AuthEvent.CreateUser(mobileNo,activity, context,navHostController))
+                        viewModel.onEvent(AuthEvent.CreateUser(mobileNo,name,activity, context,navHostController))
                     }
 
                     },

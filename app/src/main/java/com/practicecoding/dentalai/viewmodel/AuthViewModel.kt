@@ -23,35 +23,49 @@ class AuthViewModel @Inject constructor(
             is AuthEvent.OtpCode -> signInWithCredential(
                 event.code,
                 event.context,
+                event.navHostController,
+                event.name,
+                event.phoneno
+            )
+
+            is AuthEvent.CreateUser -> createUserWithPhone(
+                event.mobileNo,
+                event.name,
+                event.activity,
+                event.context,
                 event.navHostController
             )
 
-            is AuthEvent.CreateUser -> createUserWithPhone(event.mobileNo,event.activity,event.context,event.navHostController)
             else -> {}
         }
     }
 
     private fun createUserWithPhone(
-        mobileNo: String, activity: Activity, context: Context, navHostController: NavHostController
+        mobileNo: String,
+        name: String,
+        activity: Activity,
+        context: Context,
+        navHostController: NavHostController
     ) {
         viewModelScope.launch {
-            repo.createUserWithPhone(mobileNo, activity).collect{
+            repo.createUserWithPhone(mobileNo, activity).collect {
                 when (it) {
                     is Resource.Success -> {
-
                         context.showMsg(it.result)
                         navHostController.currentBackStackEntry?.savedStateHandle?.set(
                             key = "phonenumberlogin",
                             value = mobileNo
                         )
+                        navHostController.currentBackStackEntry?.savedStateHandle?.set(
+                            key = "name",
+                            value = name
+                        )
                         navHostController.navigate(Screens.OtpScreen.route)
                     }
-
                     is Resource.Failure -> {
 
                         context.showMsg(it.exception.toString())
                     }
-
                     Resource.Loading -> {
 
                     }
@@ -63,38 +77,42 @@ class AuthViewModel @Inject constructor(
     private fun signInWithCredential(
         code: String,
         context: Context,
-        navHostController: NavHostController
+        navHostController: NavHostController,
+        name: String,
+        phoneno: String
     ) {
         viewModelScope.launch {
             repo.signWithCredential(code).collect {
                 when (it) {
                     is Resource.Success -> {
-
+                        repo.setUser(name, phoneno)
                         context.showMsg(it.result)
                         navHostController.navigate(Screens.HomeScreen.route)
                     }
-
                     is Resource.Failure -> {
-
                         context.showMsg(it.exception.toString())
                     }
-
                     Resource.Loading -> {
-
                     }
                 }
             }
+
         }
     }
 
 }
 
 sealed class AuthEvent {
-    data class CreateUser(val mobileNo:String,val activity: Activity, val context: Context,
-                          val navHostController: NavHostController) : AuthEvent()
+    data class CreateUser(
+        val mobileNo: String, val name: String, val activity: Activity, val context: Context,
+        val navHostController: NavHostController
+    ) : AuthEvent()
+
     data class OtpCode(
         val code: String,
         val context: Context,
-        val navHostController: NavHostController
+        val navHostController: NavHostController,
+        val name: String,
+        val phoneno: String
     ) : AuthEvent()
 }
